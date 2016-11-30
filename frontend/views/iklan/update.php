@@ -1,0 +1,20 @@
+<?php
+
+use yii\helpers\Html;
+
+/* @var $this yii\web\View */
+/* @var $model backend\models\Produk */
+
+$this->title = 'Update Produk: ' . ' ' . $model->id_produk;
+//$this->params['breadcrumbs'][] = ['label' => 'Produks', 'url' => ['index']];
+//$this->params['breadcrumbs'][] = ['label' => $model->id_produk, 'url' => ['view', 'id' => $model->id_produk]];
+//$this->params['breadcrumbs'][] = 'Update';
+?>
+<div class="row row-content">
+    <?= $this->render('_form', [
+        'model' => $model,
+	'kategori'=>$kategori,
+	'files'=>$files,
+    ]) ?>
+
+</div>

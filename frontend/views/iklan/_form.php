@@ -1,0 +1,99 @@
+<?php
+
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
+use backend\models\File;
+use backend\models\Kategori;
+use backend\models\Provinsi;
+use backend\models\Kota;
+use backend\models\Kecamatan;
+use yii\web\UploadedFile;
+/* @var $this yii\web\View */
+/* @var $model backend\models\Produk */
+/* @var $form yii\widgets\ActiveForm */
+?>
+  <div class="col-md-8 col-md-offset-2 content">
+<h1 style="text-align:center;"><?= Html::encode($this->title) ?></h1>
+	<div class="produk-form">
+            
+	    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
+
+	  
+
+	    <?= $form->field($model, 'nama_produk')->textInput(['maxlength' => true]) ?>
+
+
+	    <?= $form->field($model, 'kategori')->dropDownList($kategori) ?>
+
+	    <?= $form->field($model, 'deskripsi')->widget(letyii\tinymce\Tinymce::className(), [
+	    'options' => [
+		'class' => '',
+	    ],
+	    'configs' => [ // Read more: http://www.tinymce.com/wiki.php/Configuration
+		'link_list' => [
+		    [
+		        'title' => 'My page 1',
+		        'value' => 'http://www.tinymce.com',
+		    ],
+		    [
+		        'title' => 'My page 2',
+		        'value' => 'http://www.tinymce.com',
+		    ],
+		],
+		'height'=>'450px',
+	    ],
+	]);?>
+	<?php
+	if($model->isNewRecord){
+	?>
+		<div class="row">
+			 <div class="col-md-6">
+				<?= $form->field($model, 'imageFiles[1]')->fileInput(['multiple' => true, 'accept' => 'image/*']) ?>
+			</div>
+	
+		</div>
+
+	
+	<?php
+	}else{ 
+                echo '<div class="row">';
+		foreach ($files as $index=>$file) {
+
+			echo '<div class="col-md-5">';
+			echo Html::img('upload/produk/'.$file->nama_file,['width'=>'300px']);
+			echo '</div><div class="col-md-3">';
+			echo $form->field($file, "[$index]upload_file")->fileInput();
+			echo  "</div>";
+
+		}
+               echo "</div>";
+
+	}
+	?>
+
+
+<p>&nbsp;</p>
+   <div class="form-group">
+        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-danger  login form-control' : 'btn btn-danger login form-control']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
+
+</div>
+
+
+ 
+
+<script>
+
+	var addDiv = $('#dynamic');
+	var i = $('p#input').size() + 1;
+	function test(){
+
+$("#dynamic").append('<p id="input"><input type="file" id="p_new" size="40" name="Produk[imageFiles][' + i +']" value="" placeholder="I am New" /><a href="#" id="remNew">Remove</a> </p>');
+	i++;
+
+	}
+</script>

@@ -1,0 +1,46 @@
+<?php
+use yii\helpers\Html;
+use backend\models\File;
+use yii\widgets\Pjax;
+use frontend\models\Mark;
+use yii\helpers\Url;
+  $img=File::find()->where(['id_item'=>$model->id_produk])->one();
+		  		echo '<div class="col-xs-6 col-md-3 thumb">';
+                                //TOmbol Like
+                                Pjax::begin(['id'=>$model->id_produk,'enablePushState' => false]);
+		                         $mark= Mark::find()->where(['id_item'=>$model->id_produk,'id_user'=>Yii::$app->user->id])->one();
+		          		if($mark){
+					   echo Html::a(' Like', ['iklan/unsave','id'=>$model->id_produk], 
+							['class' => 'btn  btn-info glyphicon glyphicon-heart-empty save-index']);
+		                         }else{
+	 				   echo Html::a(' Like', ['iklan/save','id'=>$model->id_produk], 
+							['class' => 'btn  btn-default glyphicon glyphicon-heart-empty save-index']);
+		                          }
+                                Pjax::end(); 
+                                //Rating
+  				echo  Html::Button('<span class="glyphicon glyphicon-star"> Rate</span>',
+              				 ['value'=>Url::to('index.php?r=iklan/rate&id='.$model->id_produk),
+					'class'=>'btn btn-default rate-index','onclick'=>"$('#modal').modal('show')
+                      			.find('#modalContent')
+                      			.load($(this).attr('value'));"]);
+				if($img){
+				   $link= Html::img('upload/produk/'.$img->nama_file,['class'=>'img-responsive item']);
+				}else{
+		                   echo $link= '<img src="http://placehold.it/350x150&text=FooBar9">';
+		                 }
+	                         $link.='<h5>'.$model->nama_produk.'</h5>';
+                                 echo Html::a($link, ['iklan/view','id'=>$model->id_produk]);   
+				echo '</div>';
+
+
+//modal rating
+Modal::begin([
+	'header' => '<h2>Beri Rating</h2>',
+	'id'=>'modal',
+	'size'=>'modal-md',
+	]);
+	echo '<div id="modalContent">';
+	  Pjax::begin(['id' => 'countries','enablePushState' => false]);
+	  Pjax::end();
+	echo '</div>';
+ Modal::end();
